@@ -3,32 +3,403 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>三國・逐鹿天下 v1</title>
+<title>三國・逐鹿天下 v2</title>
 <style>
 :root{color-scheme:dark;--gold:#e3bd76;--line:#384744;--muted:#acb7ad}
-*{box-sizing:border-box}body{margin:0;background:#111b1b;color:#eee7d8;font:16px system-ui,"Microsoft JhengHei",sans-serif}button,select{font:inherit;color:inherit;background:#263b38;border:1px solid #617268;border-radius:7px;padding:10px;cursor:pointer}button:hover{background:#40574b}button:disabled{opacity:.4;cursor:default}button.primary{background:#d6af69;color:#201e17;font-weight:bold}header{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:18px 24px;border-bottom:1px solid var(--line)}h1{font:700 28px Georgia,serif;letter-spacing:4px;margin:0;color:var(--gold)}small,.muted{color:var(--muted)}.tools{display:flex;gap:8px;flex-wrap:wrap}.stats{display:flex;gap:24px;flex-wrap:wrap;padding:14px 24px;background:#1d2b28}.stats b{color:var(--gold)}main{display:grid;grid-template-columns:minmax(0,1fr) 305px;gap:16px;padding:16px}.panel{background:#1b2927;border:1px solid var(--line);border-radius:10px;overflow:hidden}.maptop{padding:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}.scroll{overflow:auto;background:#233733;max-height:70vh}svg{display:block;user-select:none;-webkit-user-select:none}svg text{pointer-events:none;font-family:system-ui,sans-serif}.tile{cursor:pointer}.tile:hover polygon{stroke:#fff;stroke-width:2.5}aside{padding:18px}h2{margin:0 0 12px;font-size:23px;color:var(--gold)}h3{margin:20px 0 10px;font-size:16px}.row{display:flex;justify-content:space-between;gap:8px;margin:9px 0}.actions{display:grid;gap:8px;margin-top:15px}select{width:100%;margin:5px 0}label{font-size:14px;color:var(--muted)}.bar{height:6px;background:#101a18;border-radius:5px;overflow:hidden;margin:7px 0 13px}.bar i{display:block;height:100%;background:var(--gold)}.note{font-size:14px;line-height:1.8;color:#bfcabc}.legend{padding:10px 14px;font-size:13px;color:#bbc5b9}.bottom{margin:0 16px 16px;padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:24px}#log{height:158px;overflow:auto;font-size:14px;line-height:1.9}#log p{margin:0;border-bottom:1px solid #293a34}.help{font-size:14px;line-height:1.8}#notice{padding:10px 24px;background:#354639;color:#fff0c7;min-height:44px}dialog{background:#1b2927;color:#eee7d8;border:1px solid var(--gold);border-radius:14px;width:min(530px,92vw);padding:25px}dialog::backdrop{background:#000b}dialog p{line-height:1.8}.choices{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}.choices button{padding:20px 10px}footer{text-align:center;padding:12px;color:#92a59a;font-size:12px}@media(max-width:850px){header{padding:14px;align-items:flex-start;flex-direction:column}main{grid-template-columns:1fr}aside{min-height:240px}.bottom{grid-template-columns:1fr}.stats{gap:12px;font-size:14px}h1{font-size:25px}.scroll{max-height:58vh}}
+*{box-sizing:border-box}
+body{margin:0;background:#111b1b;color:#eee7d8;font:16px system-ui,"Microsoft JhengHei",sans-serif}
+button,select{font:inherit;color:inherit;background:#263b38;border:1px solid #617268;border-radius:7px;padding:10px;cursor:pointer}
+button:hover{background:#40574b}
+button:disabled{opacity:.4;cursor:default}
+button.primary{background:#d6af69;color:#201e17;font-weight:bold}
+header{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:18px 24px;border-bottom:1px solid var(--line)}
+h1{font:700 28px Georgia,serif;letter-spacing:4px;margin:0;color:var(--gold)}
+small,.muted{color:var(--muted)}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.stats{display:flex;gap:24px;flex-wrap:wrap;padding:14px 24px;background:#1d2b28}
+.stats b{color:var(--gold)}
+main{display:grid;grid-template-columns:minmax(0,1fr) 305px;gap:16px;padding:16px}
+.panel{background:#1b2927;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.maptop{padding:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.scroll{overflow:auto;background:#233733;max-height:70vh}
+svg{display:block;user-select:none;-webkit-user-select:none}
+svg text{pointer-events:none;font-family:system-ui,sans-serif}
+.tile{cursor:pointer}
+.tile:hover polygon{stroke:#fff;stroke-width:2.5}
+aside{padding:18px}
+h2{margin:0 0 12px;font-size:23px;color:var(--gold)}
+h3{margin:20px 0 10px;font-size:16px}
+.row{display:flex;justify-content:space-between;gap:8px;margin:9px 0}
+.actions{display:grid;gap:8px;margin-top:15px}
+select{width:100%;margin:5px 0}
+label{font-size:14px;color:var(--muted)}
+.bar{height:6px;background:#101a18;border-radius:5px;overflow:hidden;margin:7px 0 13px}
+.bar i{display:block;height:100%;background:var(--gold)}
+.note{font-size:14px;line-height:1.8;color:#bfcabc}
+.legend{padding:10px 14px;font-size:13px;color:#bbc5b9}
+.bottom{margin:0 16px 16px;padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+#log{height:158px;overflow:auto;font-size:14px;line-height:1.9}
+#log p{margin:0;border-bottom:1px solid #293a34}
+.help{font-size:14px;line-height:1.8}
+#notice{padding:10px 24px;background:#354639;color:#fff0c7;min-height:44px}
+dialog{background:#1b2927;color:#eee7d8;border:1px solid var(--gold);border-radius:14px;width:min(530px,92vw);padding:25px}
+dialog::backdrop{background:#000b}
+dialog p{line-height:1.8}
+.choices{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.choices button{padding:20px 10px}
+footer{text-align:center;padding:12px;color:#92a59a;font-size:12px}
+@media(max-width:850px){
+ header{padding:14px;align-items:flex-start;flex-direction:column}
+ main{grid-template-columns:1fr}
+ aside{min-height:240px}
+ .bottom{grid-template-columns:1fr}
+ .stats{gap:12px;font-size:14px}
+ h1{font-size:25px}
+ .scroll{max-height:58vh}
+}
 </style>
 </head>
 <body>
-<header><div><h1>三國・逐鹿天下</h1><small>原創六角戰棋｜第一版・群雄爭鋒</small></div><div class="tools"><button onclick="saveGame()">存檔</button><button onclick="loadGame()">讀檔</button><button onclick="openNew()">新遊戲</button><button id="end" class="primary" onclick="endTurn()">結束回合 ▶</button></div></header>
-<div id="stats" class="stats"></div><div id="notice" role="status" aria-live="polite">請選擇勢力開始。</div>
-<main><section class="panel"><div class="maptop"><span>天下形勢 <small>架空戰略地圖</small></span><div class="tools"><button onclick="zoom(-.15)" aria-label="縮小地圖">－</button><button onclick="zoom(.15)" aria-label="放大地圖">＋</button></div></div><div class="scroll"><svg id="map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1340 640" aria-label="六角戰略地圖"></svg></div><div class="legend">▲ 山地不可通行　♣ 森林減傷　≈ 河川移動較慢　金框：選取　綠格：可移動　紅框：可攻擊</div></section><aside id="detail" class="panel"></aside></main>
-<section class="panel bottom"><div><h3 style="margin-top:0">軍情紀錄</h3><div id="log"></div></div><div class="help"><b style="color:var(--gold)">出師指南</b><br>① 點我方城池，開發、徵兵或選武將出征。<br>② 點部隊，再點綠格移動，點紅框敵軍／城池攻擊。<br>③ 每隊每回合可移動一次、攻擊一次；攻擊後不能再移動。<br>④ 開啟戰法後再點敵人：耗氣 30，傷害 ×1.6；氣力每回合 +15。<br>⑤ 結束回合後，電腦行動、城池收稅產糧、部隊消耗糧食。<br>⑥ 佔領全部 12 城獲勝；失去所有城池與部隊則敗北。<br>弓兵射程 2 格，其餘 1 格；衝車擅攻城。射擊採簡化規則，不計視線遮擋。</div></section>
+
+<header>
+ <div>
+  <h1>三國・逐鹿天下</h1>
+  <small>原創六角戰棋｜第二版・智略與工事</small>
+ </div>
+ <div class="tools">
+  <button onclick="saveGame()">存檔</button>
+  <button onclick="loadGame()">讀檔</button>
+  <button onclick="openNew()">新遊戲</button>
+  <button id="end" class="primary" onclick="endTurn()">結束回合 ▶</button>
+ </div>
+</header>
+
+<div id="stats" class="stats"></div>
+<div id="notice" role="status" aria-live="polite">請選擇勢力開始。</div>
+
+<main>
+ <section class="panel">
+  <div class="maptop">
+   <span>天下形勢 <small>架空戰略地圖</small></span>
+   <div class="tools">
+    <button onclick="zoom(-.15)" aria-label="縮小地圖">－</button>
+    <button onclick="zoom(.15)" aria-label="放大地圖">＋</button>
+   </div>
+  </div>
+  <div class="scroll">
+   <svg id="map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1340 640" aria-label="六角戰略地圖"></svg>
+  </div>
+  <div class="legend">
+   ▲ 山地不可通行　♣ 森林減傷　≈ 河川移動較慢　
+   金框：選取　綠格：可移動　紅框：可攻擊／計略　紫框：可建造
+  </div>
+ </section>
+ <aside id="detail" class="panel"></aside>
+</main>
+
+<section class="panel bottom">
+ <div>
+  <h3 style="margin-top:0">軍情紀錄</h3>
+  <div id="log"></div>
+ </div>
+ <div class="help">
+  <b style="color:var(--gold)">第二版操作</b>
+  <br>① 選我方城池：內政、出征、武將調動、登用。
+  <br>② 選部隊：綠格移動，紅框攻擊；選計略後點敵兵，紫格建設。
+  <br>③ 攻擊／戰法／計略／建造共用一次行動；執行後不能移動。
+  <br>④ 計略射程2格，成功率＝65%＋智力差×1.2%，最低10%、最高95%。失敗照樣扣氣。
+  <br>⑤ 軍樂台補氣20、戰鼓台傷害+25%、堅陣塔物理減傷20%，範圍均2格，同類不疊加。
+  <br>⑥ 箭樓2格／280傷害；投石台3格／400傷害。我方階段開始自動攻擊範圍內所有敵兵。
+  <br>⑦ 敵方城池與野戰部隊都消失才算滅亡；擊敗該勢力者才可在己城登用其武將。
+  <br>⑧ 每城每回合一次內政；每方最多8設施。森林物理減傷20%；河川移動消耗2。
+  <br>⑨ 部隊每回合基礎回氣15、耗糧12%；缺糧損兵15%。城防0且守軍≤1000可佔城。
+  <br>⑩ 本版使用獨立存檔，第一版存檔仍保留。射擊與計略不計視線遮擋。
+ </div>
+</section>
+
 <footer>單檔離線遊戲 · 無外部素材與套件 · 存檔保存在目前瀏覽器</footer>
-<dialog id="start"><h2>英雄起於微末，天下待你落子。</h2><p>選擇你的勢力。每方有四座城、八名武將；從內政與行軍開始，攻取天下。</p><div class="choices"><button onclick="newGame(0)">蜀・劉備<br><small>西南起兵</small></button><button onclick="newGame(1)">魏・曹操<br><small>北方雄主</small></button><button onclick="newGame(2)">吳・孫權<br><small>江東基業</small></button></div><p class="note">原創簡化戰棋，並非《三國志11》的移植版。本版沒有外交、單挑與即時動畫。</p><button onclick="loadGame()">讀取存檔</button> <button id="cancelNew" onclick="document.getElementById('start').close()">返回目前戰局</button></dialog>
+
+<dialog id="start">
+ <h2>英雄起於微末，天下待你落子。</h2>
+ <p>選擇你的勢力。每方有四座城、八名武將；從內政與行軍開始，攻取天下。</p>
+ <div class="choices">
+  <button onclick="newGame(0)">蜀・劉備<br><small>西南起兵</small></button>
+  <button onclick="newGame(1)">魏・曹操<br><small>北方雄主</small></button>
+  <button onclick="newGame(2)">吳・孫權<br><small>江東基業</small></button>
+ </div>
+ <p class="note">第二版加入智力計略、武將調動、五種設施與滅國登用。本版需重新開局，第一版存檔不會刪除。</p>
+ <button onclick="loadGame()">讀取存檔</button>
+ <button id="cancelNew" onclick="document.getElementById('start').close()">返回目前戰局</button>
+</dialog>
+
 <script>
 'use strict';
+
 const $=id=>document.getElementById(id);
-const W=16,H=11,S=36,KEY='three-kingdoms-original-v1';
-const FA=[{name:'蜀',color:'#64c69a'},{name:'魏',color:'#72a9e7'},{name:'吳',color:'#e88976'}];
-const TYPES={槍兵:{move:3,range:1,atk:1,city:1},騎兵:{move:4,range:1,atk:1.15,city:.85},弓兵:{move:3,range:2,atk:.85,city:.8},衝車:{move:2,range:1,atk:.5,city:2.4}};
-const NAMES=[['劉備','關羽','張飛','趙雲','諸葛亮','黃忠','馬超','魏延'],['曹操','夏侯惇','夏侯淵','張遼','荀彧','許褚','徐晃','郭嘉'],['孫權','周瑜','魯肅','呂蒙','甘寧','陸遜','太史慈','黃蓋']];
-const POWERS=[[85,98,99,96,68,93,97,92],[90,92,91,95,60,98,93,65],[82,90,73,89,94,88,95,91]];
-const CITYDATA=[['成都',1,7,0],['漢中',2,4,0],['梓潼',0,5,0],['江州',4,8,0],['長安',5,2,1],['洛陽',8,1,1],['許昌',10,3,1],['鄴城',12,0,1],['建業',13,6,2],['柴桑',10,7,2],['吳',14,8,2],['會稽',12,10,2]];
+const W=16,H=11,S=36,KEY='three-kingdoms-original-v2';
+
+const FA=[
+ {name:'蜀',color:'#64c69a'},
+ {name:'魏',color:'#72a9e7'},
+ {name:'吳',color:'#e88976'}
+];
+
+const TYPES={
+ 槍兵:{move:3,range:1,atk:1,city:1},
+ 騎兵:{move:4,range:1,atk:1.15,city:.85},
+ 弓兵:{move:3,range:2,atk:.85,city:.8},
+ 衝車:{move:2,range:1,atk:.5,city:2.4}
+};
+
+const NAMES=[
+ ['劉備','關羽','張飛','趙雲','諸葛亮','黃忠','馬超','魏延'],
+ ['曹操','夏侯惇','夏侯淵','張遼','荀彧','許褚','徐晃','郭嘉'],
+ ['孫權','周瑜','魯肅','呂蒙','甘寧','陸遜','太史慈','黃蓋']
+];
+
+const POWERS=[
+ [85,98,99,96,68,93,97,92],
+ [90,92,91,95,60,98,93,65],
+ [82,90,73,89,94,88,95,91]
+];
+
+const CITYDATA=[
+ ['成都',1,7,0],['漢中',2,4,0],['梓潼',0,5,0],['江州',4,8,0],
+ ['長安',5,2,1],['洛陽',8,1,1],['許昌',10,3,1],['鄴城',12,0,1],
+ ['建業',13,6,2],['柴桑',10,7,2],['吳',14,8,2],['會稽',12,10,2]
+];
+
 const DIR=[[1,0],[-1,0],[0,1],[0,-1],[1,-1],[-1,1]];
-let G=null,sel=null,skill=false,scale=1,busy=false;
+
+const INT=[
+ [78,79,42,78,100,68,54,69],
+ [94,63,67,83,97,36,74,98],
+ [89,96,94,91,76,98,75,72]
+];
+
+const BUILD={
+ 軍樂台:{
+  cost:700,hp:1800,range:2,
+  desc:'我方階段開始，範圍內部隊氣力 +20'
+ },
+ 戰鼓台:{
+  cost:800,hp:2000,range:2,
+  desc:'範圍內我軍普通攻擊、戰法及反擊傷害 +25%'
+ },
+ 堅陣塔:{
+  cost:800,hp:2200,range:2,
+  desc:'範圍內我軍受到物理傷害 -20%'
+ },
+ 箭樓:{
+  cost:1000,hp:2400,range:2,damage:280,
+  desc:'我方階段開始，攻擊範圍內所有敵兵，基礎傷害 280'
+ },
+ 投石台:{
+  cost:1400,hp:2000,range:3,damage:400,
+  desc:'我方階段開始，攻擊範圍內所有敵兵，基礎傷害 400'
+ }
+};
+
+const PLOTS={
+ 火計:{cost:25,desc:'傷害隨施計者智力提高，無視森林與堅陣塔'},
+ 擾亂:{cost:30,desc:'敵軍下一個行動階段無法移動、攻擊、計略或建造'},
+ 偽報:{cost:20,desc:'敵軍氣力 -35；高智力可額外降低更多'}
+};
+
+let G=null,sel=null,mode='attack',buildType='軍樂台',scale=1,busy=false;
+
+const fortAt=(q,r)=>G.forts.find(b=>b.q===q&&b.r===r);
+const isCity=t=>t&&t.level!==undefined;
+const isUnit=t=>t&&t.officer!==undefined;
+const title=t=>isUnit(t)?officer(t).name:isCity(t)?t.name:t.type;
+const ownCities=f=>G.cities.filter(c=>c.f===f);
+
+const aura=(u,type)=>G.forts.some(
+ b=>b.f===u.f&&b.type===type&&dist(u,b)<=BUILD[type].range
+);
+
+const atkBonus=u=>aura(u,'戰鼓台')?1.25:1;
+
+const defense=u=>
+ (tile(u.q,u.r).type==='森林'?.8:1)*
+ (aura(u,'堅陣塔')?.8:1);
+
+const ready=u=>u&&!u.attacked&&!u.stunned;
+
+function selectedArmy(){
+ const u=current();
+ return sel?.kind==='unit'&&u?.f===G.player&&!busy&&!G.over?u:null;
+}
+
+function finish(u){
+ u.moved=true;
+ u.attacked=true;
+}
+
+function probability(u,v){
+ return Math.max(10,Math.min(95,65+(officer(u).intel-officer(v).intel)*1.2));
+}
+
+function canPlot(u,v){
+ return ready(u)&&isUnit(v)&&v.f!==u.f&&dist(u,v)<=2;
+}
+
+function chooseMode(m){
+ const u=selectedArmy();
+ if(!ready(u))return;
+ mode=mode===m?'attack':m;
+ render();
+ message('目前指令：'+mode+'。選擇地圖上的目標。');
+}
+
+function chooseBuild(t){
+ const u=selectedArmy();
+ if(!ready(u))return;
+ buildType=t;
+ mode='build';
+ render();
+ message('請點紫色相鄰格建造'+t+'，金 '+BUILD[t].cost+'。');
+}
+
+function canBuild(u,t){
+ return ready(u)&&dist(u,t)===1&&
+ ['平原','森林'].includes(t.type)&&
+ !cityAt(t.q,t.r)&&!unitAt(t.q,t.r)&&!fortAt(t.q,t.r);
+}
+
+function construct(u,t,type){
+ if(!BUILD[type]||!canBuild(u,t))return false;
+ if(G.forts.filter(b=>b.f===u.f).length>=8){
+  message('每方最多 8 座設施。');
+  return false;
+ }
+ const d=BUILD[type];
+ if(G.res[u.f].gold<d.cost){
+  message('建造金不足。');
+  return false;
+ }
+ G.res[u.f].gold-=d.cost;
+ G.forts.push({
+  id:G.next++,q:t.q,r:t.r,f:u.f,type,hp:d.hp
+ });
+ finish(u);
+ log(officer(u).name+'建造'+type+'。');
+ return true;
+}
+
+function plot(u,v,type){
+ if(!PLOTS[type]||!canPlot(u,v))return false;
+ if(u.energy<PLOTS[type].cost){
+  message('氣力不足。');
+  return false;
+ }
+ u.energy-=PLOTS[type].cost;
+ finish(u);
+ const chance=probability(u,v);
+ const success=Math.random()*100<chance;
+ if(!success){
+  log(officer(u).name+'對'+officer(v).name+'施展'+type+
+      '失敗（'+Math.round(chance)+'%）。');
+  return true;
+ }
+ if(type==='火計'){
+  const damage=350+officer(u).intel*7;
+  v.troops-=damage;
+  log(officer(u).name+'火計成功，'+officer(v).name+'損失 '+damage+' 兵。');
+  if(v.troops<=0)removeUnit(v,u.f);
+ }
+ if(type==='擾亂'){
+  v.confused=1;
+  log(officer(v).name+'陷入混亂，下一行動階段無法行動。');
+ }
+ if(type==='偽報'){
+  const loss=35+Math.floor(Math.max(0,officer(u).intel-officer(v).intel)/4);
+  v.energy=Math.max(0,v.energy-loss);
+  log(officer(v).name+'中了偽報，氣力 -'+loss+'。');
+ }
+ settle();
+ return true;
+}
+
+function transfer(){
+ const c=current();
+ if(busy||G.over||sel?.kind!=='city'||c?.f!==G.player)return;
+ const o=G.officers.find(o=>o.id===Number($('officer').value));
+ const to=G.cities.find(c=>c.id===Number($('destination').value));
+ if(!o||!available(c).includes(o)||!to||to.f!==c.f||to.id===c.id){
+  return message('請選擇可調動武將及另一座我方城池。');
+ }
+ const turns=Math.max(1,Math.ceil(dist(c,to)/4));
+ o.city=null;
+ o.transit={to:to.id,arrival:G.turn+turns};
+ log(o.name+'調往'+to.name+'，預計 '+turns+' 回合後抵達。');
+ render();
+}
+
+function arrivals(){
+ for(const o of G.officers){
+  if(!o.transit||o.transit.arrival>G.turn)continue;
+  const target=G.cities.find(c=>c.id===o.transit.to);
+  o.transit=null;
+  const home=target.f===o.f
+   ?target
+   :ownCities(o.f).sort((a,b)=>dist(a,target)-dist(b,target))[0];
+  o.city=home?home.id:null;
+  o.ready=G.turn;
+  log(o.name+(home?'抵達'+home.name+'。':'無城可歸，暫時待命。'));
+ }
+}
+
+function recruitable(f){
+ return G.officers.filter(o=>o.f===-1&&o.captor===f);
+}
+
+function recruitAll(c){
+ if(!c)return;
+ const list=recruitable(c.f);
+ list.forEach(o=>{
+  o.f=c.f;
+  o.city=c.id;
+  o.captor=null;
+  o.ready=G.turn+1;
+ });
+ if(list.length){
+  log(c.name+'登用 '+list.map(o=>o.name).join('、')+'；下回合可出征。');
+ }
+}
+
+function recruitPrisoners(){
+ const c=current();
+ if(busy||G.over||sel?.kind!=='city'||c?.f!==G.player)return;
+ recruitAll(c);
+ render();
+}
+
+function settle(){
+ for(let f=0;f<3;f++){
+  if(G.dead[f]||ownCities(f).length||G.units.some(u=>u.f===f))continue;
+  G.dead[f]=true;
+  const winner=G.lastHit[f];
+  G.officers.filter(
+   o=>o.f===f||(o.f===-1&&o.captor===f)
+  ).forEach(o=>{
+   o.f=-1;
+   o.city=null;
+   o.transit=null;
+   o.captor=winner;
+  });
+  G.forts=G.forts.filter(b=>b.f!==f);
+  log(FA[f].name+'勢力滅亡！'+
+      (winner!==null?FA[winner].name+'可登用其全部武將。':'武將暫時在野。'));
+ }
+ for(let f=0;f<3;f++){
+  if(f!==G.player&&!G.dead[f])recruitAll(ownCities(f)[0]);
+ }
+}
+
 const key=(q,r)=>q+','+r;
-const dist=(a,b)=>(Math.abs(a.q-b.q)+Math.abs(a.r-b.r)+Math.abs(a.q+a.r-b.q-b.r))/2;
+const dist=(a,b)=>
+ (Math.abs(a.q-b.q)+Math.abs(a.r-b.r)+Math.abs(a.q+a.r-b.q-b.r))/2;
 const cityAt=(q,r)=>G.cities.find(c=>c.q===q&&c.r===r);
 const unitAt=(q,r)=>G.units.find(u=>u.q===q&&u.r===r);
 const tile=(q,r)=>G.tiles.find(t=>t.q===q&&t.r===r);
@@ -36,23 +407,38 @@ const officer=u=>G.officers.find(o=>o.id===u.officer);
 const inside=(q,r)=>q>=0&&r>=0&&q<W&&r<H;
 
 function neighbors(t){
- return DIR.map(([q,r])=>({q:t.q+q,r:t.r+r})).filter(t=>inside(t.q,t.r));
+ return DIR.map(([q,r])=>({q:t.q+q,r:t.r+r}))
+  .filter(t=>inside(t.q,t.r));
 }
-function message(s){$('notice').textContent=s;}
+
+function message(s){
+ $('notice').textContent=s;
+}
+
 function log(s){
  G.log.unshift('第'+G.turn+'回合｜'+s);
  G.log=G.log.slice(0,80);
 }
 
 function newGame(player){
- G={version:1,player,turn:1,next:1,over:false,tiles:[],cities:[],units:[],officers:[],log:[],res:FA.map(()=>({gold:5000,food:18000}))};
+ G={
+  version:2,player,turn:1,next:1,over:false,
+  dead:[false,false,false],
+  lastHit:[null,null,null],
+  forts:[],tiles:[],cities:[],units:[],officers:[],log:[],
+  res:FA.map(()=>({gold:5000,food:18000}))
+ };
  for(let r=0;r<H;r++)for(let q=0;q<W;q++){
-  let type=((q*13+r*7)%17===0)?'山地':((q*7+r*11)%9<2?'森林':'平原');
+  let type=((q*13+r*7)%17===0)
+   ?'山地'
+   :((q*7+r*11)%9<2?'森林':'平原');
   if(r===5&&q>3&&q<14)type='河川';
   if((q===6||q===10)&&r===5)type='橋梁';
   G.tiles.push({q,r,type});
  }
- G.cities=CITYDATA.map(([name,q,r,f],id)=>({id,name,q,r,f,troops:6500,hp:5000,level:1,acted:false}));
+ G.cities=CITYDATA.map(([name,q,r,f],id)=>({
+  id,name,q,r,f,troops:6500,hp:5000,level:1,acted:false
+ }));
  G.cities.forEach(c=>{
   tile(c.q,c.r).type='平原';
   neighbors(c).forEach(t=>{
@@ -60,11 +446,11 @@ function newGame(player){
   });
  });
  FA.forEach((f,fi)=>NAMES[fi].forEach((name,i)=>G.officers.push({
-  id:fi*8+i,name,power:POWERS[fi][i],f:fi,
+  id:fi*8+i,name,power:POWERS[fi][i],intel:INT[fi][i],f:fi,
   city:G.cities.filter(c=>c.f===fi)[Math.floor(i/2)].id
  })));
  sel={kind:'city',id:G.cities.find(c=>c.f===player).id};
- skill=false;
+ mode='attack';
  $('start').close();
  log(FA[player].name+'軍起兵，逐鹿天下！');
  message('點選城池出征，或先開發與徵兵。');
@@ -76,19 +462,29 @@ function openNew(){
  $('cancelNew').hidden=!G;
  $('start').showModal();
 }
+
 function current(){
- return !sel?null:(sel.kind==='city'?G.cities:G.units).find(x=>x.id===sel.id);
+ return !sel?null:
+ (sel.kind==='city'?G.cities:sel.kind==='fort'?G.forts:G.units)
+ .find(x=>x.id===sel.id);
 }
+
 function available(c){
- return G.officers.filter(o=>o.f===c.f&&o.city===c.id&&(!o.ready||o.ready<=G.turn));
+ return G.officers.filter(
+  o=>o.f===c.f&&o.city===c.id&&(!o.ready||o.ready<=G.turn)
+ );
 }
+
 function blocked(q,r,u){
  const c=cityAt(q,r);
- return tile(q,r).type==='山地'||!!unitAt(q,r)||(c&&c.f!==u.f);
+ return tile(q,r).type==='山地'||!!unitAt(q,r)||
+ !!fortAt(q,r)||(c&&c.f!==u.f);
 }
 
 function reach(u){
- const result=new Map([[key(u.q,u.r),{q:u.q,r:u.r,cost:0}]]);
+ const result=new Map([
+  [key(u.q,u.r),{q:u.q,r:u.r,cost:0}]
+ ]);
  const queue=[result.values().next().value];
  while(queue.length){
   queue.sort((a,b)=>a.cost-b.cost);
@@ -97,7 +493,8 @@ function reach(u){
    if(blocked(n.q,n.r,u))continue;
    const cost=a.cost+(tile(n.q,n.r).type==='河川'?2:1);
    const k=key(n.q,n.r);
-   if(cost<=TYPES[u.type].move&&(!result.has(k)||cost<result.get(k).cost)){
+   if(cost<=TYPES[u.type].move&&
+      (!result.has(k)||cost<result.get(k).cost)){
     const v={...n,cost};
     result.set(k,v);
     queue.push(v);
@@ -109,46 +506,70 @@ function reach(u){
 }
 
 function enemyAt(q,r,f){
- const u=unitAt(q,r);
- if(u&&u.f!==f)return u;
- const c=cityAt(q,r);
- return c&&c.f!==f?c:null;
+ return [unitAt(q,r),cityAt(q,r),fortAt(q,r)]
+  .find(t=>t&&t.f!==f)||null;
 }
+
 function canAttack(u,t){
- return t&&t.f!==u.f&&!u.attacked&&dist(u,t)<=TYPES[u.type].range;
+ return ready(u)&&t&&t.f!==u.f&&dist(u,t)<=TYPES[u.type].range;
 }
 
 function selectHex(q,r){
  if(!G||busy||G.over)return;
- const a=current();
- if(sel?.kind==='unit'&&a?.f===G.player){
-  const enemy=enemyAt(q,r,a.f);
-  if(canAttack(a,enemy)){
-   attack(a,enemy,skill);
-   skill=false;
+ const a=current(),u=selectedArmy(),t=tile(q,r);
+ const enemy=enemyAt(q,r,G.player);
+ if(u){
+  if(mode==='build'){
+   if(construct(u,t,buildType)){
+    mode='attack';
+    render();
+    message('設施建成；自動攻擊及補氣將於我方下次行動階段開始時結算。');
+   }else{
+    message('請選擇紫格，確認金足夠且我方設施少於 8 座。');
+   }
+   return;
+  }
+  if(PLOTS[mode]){
+   if(canPlot(u,enemy)){
+    plot(u,enemy,mode);
+    mode='attack';
+    checkEnd();
+    render();
+   }else{
+    message('計略只能指定 2 格內敵方部隊；可按取消指令重新選取。');
+   }
+   return;
+  }
+  if(canAttack(u,enemy)){
+   attack(u,enemy,mode==='戰法');
+   mode='attack';
    checkEnd();
    render();
    return;
   }
-  if(!a.moved&&!a.attacked&&reach(a).has(key(q,r))){
-   a.q=q;
-   a.r=r;
-   a.moved=true;
-   message(officer(a).name+'已移動；可以繼續攻擊射程內敵人。');
+  if(ready(u)&&!u.moved&&reach(u).has(key(q,r))){
+   u.q=q;
+   u.r=r;
+   u.moved=true;
    render();
+   message('移動完成，仍可攻擊、計略或建造。');
    return;
   }
  }
- const u=unitAt(q,r),c=cityAt(q,r);
- sel=u?{kind:'unit',id:u.id}:c?{kind:'city',id:c.id}:null;
- skill=false;
- message(u?'已選取'+officer(u).name+'部隊。':c?'已選取'+c.name+'。':tile(q,r).type+'：請選擇城池或部隊。');
+ const v=unitAt(q,r),c=cityAt(q,r),b=fortAt(q,r);
+ sel=v?{kind:'unit',id:v.id}
+  :c?{kind:'city',id:c.id}
+  :b?{kind:'fort',id:b.id}:null;
+ mode='attack';
  render();
+ message(sel?'已選取'+title(current())+'。'
+  :t.type+'：請選擇城池、部隊或設施。');
 }
 
 function cityAction(action){
  const c=current();
- if(busy||G.over||sel?.kind!=='city'||!c||c.f!==G.player||c.acted)return;
+ if(busy||G.over||sel?.kind!=='city'||!c||
+    c.f!==G.player||c.acted)return;
  const r=G.res[c.f];
  if(action==='develop'){
   if(c.level>=5)return message('開發已達上限。');
@@ -157,7 +578,9 @@ function cityAction(action){
   c.level++;
   log(c.name+'開發提升至 '+c.level+' 級。');
  }else if(action==='recruit'){
-  if(r.gold<600||r.food<1500)return message('徵兵需要金 600、糧 1,500。');
+  if(r.gold<600||r.food<1500){
+   return message('徵兵需要金 600、糧 1,500。');
+  }
   if(c.troops>=20000)return message('城池兵力已滿。');
   r.gold-=600;
   r.food-=1500;
@@ -177,9 +600,11 @@ function cityAction(action){
 
 function deploy(c,oid,type,count){
  const o=G.officers.find(o=>o.id===oid);
- if(!o||o.city!==c.id||o.f!==c.f||(o.ready&&o.ready>G.turn)||!TYPES[type])return false;
+ if(!o||o.city!==c.id||o.f!==c.f||
+    (o.ready&&o.ready>G.turn)||!TYPES[type])return false;
  const spot=neighbors(c).find(t=>!blocked(t.q,t.r,{f:c.f}));
- if(!spot||count<1000||c.troops<count+1000||G.res[c.f].gold<300)return false;
+ if(!spot||count<1000||c.troops<count+1000||
+    G.res[c.f].gold<300)return false;
  c.troops-=count;
  G.res[c.f].gold-=300;
  o.city=null;
@@ -194,7 +619,10 @@ function deploy(c,oid,type,count){
 function playerDeploy(){
  const c=current();
  if(busy||G.over||sel?.kind!=='city'||c?.f!==G.player)return;
- if(deploy(c,Number($('officer').value),$('type').value,Number($('count').value))){
+ if(deploy(
+  c,Number($('officer').value),
+  $('type').value,Number($('count').value)
+ )){
   message('部隊已出城；點選地圖上的武將旗幟開始行軍。');
  }else{
   message('出征失敗：需有武將、金 300、至少留下 1,000 守軍，並有空的相鄰通行格。');
@@ -202,74 +630,98 @@ function playerDeploy(){
  render();
 }
 
-function removeUnit(u){
+function removeUnit(u,killer=null){
  const o=officer(u);
- const homes=G.cities.filter(c=>c.f===u.f).sort((a,b)=>dist(u,a)-dist(u,b));
+ const homes=ownCities(u.f).sort((a,b)=>dist(u,a)-dist(u,b));
  o.city=homes.length?homes[0].id:null;
  o.ready=G.turn+1;
  G.units=G.units.filter(x=>x.id!==u.id);
- log(o.name+(homes.length?'部隊潰敗，退回'+homes[0].name+'。':'部隊潰敗，暫時流亡。'));
+ if(killer!==null)G.lastHit[u.f]=killer;
+ log(o.name+(homes.length
+  ?'部隊潰敗，退回'+homes[0].name+'。'
+  :'部隊潰敗，等待勢力戰果。'));
 }
 
-function attack(u,target,useSkill=false){
- if(!canAttack(u,target))return false;
- if(useSkill&&u.energy<30){
-  message('氣力不足 30，無法發動戰法。');
+function attack(u,t,boost=false){
+ if(!canAttack(u,t))return false;
+ if(boost&&u.energy<30){
+  message('戰法需要氣力 30。');
   return false;
  }
- const isCity=target.hp!==undefined,o=officer(u),boost=useSkill?1.6:1;
- if(useSkill)u.energy-=30;
- let damage=Math.round((380+u.troops*.13)*(o.power/85)*TYPES[u.type].atk*boost);
- if(isCity){
+ if(boost)u.energy-=30;
+ finish(u);
+ let damage=Math.round(
+  (380+u.troops*.13)*officer(u).power/85*
+  TYPES[u.type].atk*(boost?1.6:1)*atkBonus(u)
+ );
+ if(isCity(t)){
   damage=Math.round(damage*TYPES[u.type].city);
-  target.hp=Math.max(0,target.hp-damage);
-  target.troops=Math.max(0,target.troops-Math.round(damage*.4));
-  log(o.name+(useSkill?'發動戰法':'攻城')+'，'+target.name+'城防 -'+damage+'。');
-  if(target.hp===0&&target.troops<=1000){
-   const old=target.f;
-   target.f=u.f;
-   target.hp=2200;
-   target.troops=1000;
-   target.acted=true;
-   G.officers.filter(x=>x.city===target.id).forEach(x=>{x.f=u.f;});
-   G.officers.filter(x=>x.f===u.f&&x.city===null&&!G.units.some(v=>v.officer===x.id)).forEach(x=>x.city=target.id);
-   log(FA[u.f].name+'軍攻下'+target.name+'！城內武將歸順。');
-   if(!G.cities.some(c=>c.f===old)&&!G.units.some(v=>v.f===old)){
-    log(FA[old].name+'勢力滅亡。');
-   }
-  }else if(dist(u,target)<=1){
-   u.troops-=Math.round(180+target.troops*.045);
+  t.hp=Math.max(0,t.hp-damage);
+  t.troops=Math.max(0,t.troops-Math.round(damage*.4));
+  if(t.hp===0&&t.troops<=1000){
+   const old=t.f;
+   G.lastHit[old]=u.f;
+   t.f=u.f;
+   t.hp=2200;
+   t.troops=1000;
+   t.acted=true;
+   const home=ownCities(old).sort((a,b)=>dist(a,t)-dist(b,t))[0];
+   G.officers.filter(o=>o.city===t.id&&o.f===old).forEach(o=>{
+    o.city=home?home.id:null;
+    o.ready=G.turn+1;
+   });
+   G.officers.filter(
+    o=>o.f===u.f&&o.city===null&&!o.transit&&
+    !G.units.some(v=>v.officer===o.id)
+   ).forEach(o=>{
+    o.city=t.id;
+    o.ready=G.turn+1;
+   });
+   log(FA[u.f].name+'攻下'+t.name+'；敵將撤退或待俘，不會直接歸順。');
+  }else if(dist(u,t)<=1){
+   u.troops-=Math.round((180+t.troops*.045)*defense(u));
+  }
+ }else if(isUnit(t)){
+  damage=Math.round(damage*defense(t));
+  t.troops-=damage;
+  if(t.troops<=0){
+   removeUnit(t,u.f);
+  }else if(!t.stunned&&dist(u,t)<=TYPES[t.type].range){
+   u.troops-=Math.round(
+    (180+t.troops*.055)*officer(t).power/85*
+    atkBonus(t)*defense(u)
+   );
   }
  }else{
-  if(tile(target.q,target.r).type==='森林')damage=Math.round(damage*.8);
-  target.troops-=damage;
-  log(o.name+(useSkill?'發動戰法':'攻擊')+officer(target).name+'，造成 '+damage+' 損失。');
-  if(target.troops<=0){
-   removeUnit(target);
-  }else if(dist(u,target)<=TYPES[target.type].range){
-   u.troops-=Math.round((180+target.troops*.055)*officer(target).power/85);
+  damage=Math.round(damage*TYPES[u.type].city);
+  t.hp-=damage;
+  if(t.hp<=0){
+   G.forts=G.forts.filter(b=>b.id!==t.id);
+   log(t.type+'被摧毀！');
   }
  }
- u.moved=true;
- u.attacked=true;
- if(u.troops<=0)removeUnit(u);
+ log(officer(u).name+(boost?'發動戰法':'攻擊')+
+     title(t)+'，傷害 '+damage+'。');
+ if(u.troops<=0)removeUnit(u,t.f);
+ settle();
  message('交戰結束，詳見軍情紀錄。');
  return true;
 }
 
 function toggleSkill(){
- const u=current();
- if(busy||G.over||sel?.kind!=='unit'||u?.f!==G.player||u.attacked)return;
- skill=!skill;
- render();
- message(skill?'戰法已準備，請點紅框敵人。':'已切回普通攻擊。');
+ chooseMode('戰法');
 }
 
 function enterCity(){
  const u=current();
- if(busy||G.over||sel?.kind!=='unit'||u?.f!==G.player||u.attacked)return;
- const c=G.cities.find(c=>c.f===u.f&&dist(c,u)<=1&&c.troops+u.troops<=20000);
- if(!c)return message('需位於我方城池內或相鄰格，且入城後兵力不可超過 20,000。');
+ if(busy||G.over||sel?.kind!=='unit'||
+    u?.f!==G.player||!ready(u))return;
+ const c=G.cities.find(
+  c=>c.f===u.f&&dist(c,u)<=1&&c.troops+u.troops<=20000
+ );
+ if(!c){
+  return message('需位於我方城池內或相鄰格，且入城後兵力不可超過 20,000。');
+ }
  c.troops+=u.troops;
  officer(u).city=c.id;
  officer(u).ready=G.turn+1;
@@ -315,7 +767,8 @@ function route(u,target){
 }
 
 function aiTurn(f){
- for(const c of G.cities.filter(c=>c.f===f)){
+ if(G.dead[f])return;
+ for(const c of ownCities(f)){
   const r=G.res[f];
   if(c.hp<3500&&r.gold>=500){
    c.hp=Math.min(5000,c.hp+1800);
@@ -328,18 +781,40 @@ function aiTurn(f){
    c.level++;
    r.gold-=700;
   }
-  const officers=available(c),armies=G.units.filter(u=>u.f===f);
-  if(officers.length&&c.troops>=5000&&armies.length<8){
-   deploy(c,officers[0].id,['槍兵','弓兵','衝車','騎兵'][(G.turn+c.id)%4],Math.min(6000,c.troops-1500));
+  const os=available(c);
+  if(os.length&&c.troops>=5000&&
+     G.units.filter(u=>u.f===f).length<8){
+   deploy(
+    c,os[0].id,
+    ['槍兵','弓兵','衝車','騎兵'][(G.turn+c.id)%4],
+    Math.min(6000,c.troops-1500)
+   );
   }
  }
  for(const u of [...G.units.filter(u=>u.f===f)]){
-  if(!G.units.includes(u))continue;
-  const targets=[
-   ...G.units.filter(v=>v.f!==f),
-   ...G.cities.filter(c=>c.f!==f)
-  ].sort((a,b)=>dist(u,a)-dist(u,b));
+  if(!G.units.includes(u)||!ready(u))continue;
+  const targets=[...G.units,...G.cities,...G.forts]
+   .filter(t=>t.f!==f)
+   .sort((a,b)=>dist(u,a)-dist(u,b));
+  let victim=targets.find(
+   t=>canPlot(u,t)&&probability(u,t)>=65
+  );
+  if(victim&&officer(u).intel>=85&&u.energy>=30){
+   plot(u,victim,victim.confused||victim.stunned?'火計':'擾亂');
+   continue;
+  }
   let enemy=targets.find(t=>canAttack(u,t));
+  if(!enemy&&G.turn%4===0&&
+     G.forts.filter(b=>b.f===f).length<4&&
+     G.res[f].gold>1800){
+   const spot=neighbors(u)
+    .map(t=>tile(t.q,t.r))
+    .find(t=>canBuild(u,t));
+   if(spot&&targets.some(t=>dist(u,t)<=5)&&construct(
+    u,spot,
+    ['箭樓','軍樂台','戰鼓台','堅陣塔','投石台'][(G.turn+u.id)%5]
+   ))continue;
+  }
   if(!enemy){
    for(const t of targets){
     const step=route(u,t);
@@ -354,6 +829,32 @@ function aiTurn(f){
   }
   if(enemy)attack(u,enemy,u.energy>=30);
  }
+}
+
+function beginFaction(f){
+ for(const u of G.units.filter(u=>u.f===f)){
+  u.stunned=!!u.confused;
+  u.confused=0;
+  u.moved=u.stunned;
+  u.attacked=u.stunned;
+  u.energy=Math.min(
+   100,u.energy+15+(aura(u,'軍樂台')?20:0)
+  );
+ }
+ for(const b of [...G.forts.filter(b=>b.f===f)]){
+  const d=BUILD[b.type];
+  if(!d.damage)continue;
+  for(const u of [...G.units.filter(
+   u=>u.f!==f&&dist(u,b)<=d.range
+  )]){
+   const damage=Math.round(d.damage*defense(u));
+   u.troops-=damage;
+   log(FA[f].name+b.type+'射擊'+officer(u).name+
+       '，損失 '+damage+' 兵。');
+   if(u.troops<=0)removeUnit(u,f);
+  }
+ }
+ settle();
 }
 
 function economy(){
@@ -378,31 +879,28 @@ function economy(){
 async function endTurn(){
  if(!G||busy||G.over)return;
  busy=true;
- skill=false;
+ mode='attack';
  sel=null;
  message('各方調兵遣將中……');
  render();
  try{
   for(let f=0;f<3;f++){
-   if(f===G.player)continue;
-   G.units.filter(u=>u.f===f).forEach(u=>{
-    u.moved=false;
-    u.attacked=false;
-   });
+   if(f===G.player||G.dead[f])continue;
+   beginFaction(f);
    aiTurn(f);
    render();
-   await new Promise(resolve=>setTimeout(resolve,220));
+   await new Promise(resolve=>setTimeout(resolve,180));
   }
   economy();
+  settle();
   G.turn++;
+  arrivals();
   G.cities.forEach(c=>c.acted=false);
-  G.units.forEach(u=>{
-   u.moved=false;
-   u.attacked=false;
-   u.energy=Math.min(100,u.energy+15);
-  });
+  beginFaction(G.player);
   checkEnd();
-  if(!G.over)message('第 '+G.turn+' 回合：收入已入庫，輪到你行動。');
+  if(!G.over){
+   message('第 '+G.turn+' 回合：收入、調動、設施效果已結算。');
+  }
  }finally{
   busy=false;
   render();
@@ -410,12 +908,14 @@ async function endTurn(){
 }
 
 function checkEnd(){
- if(G.cities.every(c=>c.f===G.player)){
-  G.over=true;
-  G.result='天下一統！恭喜你完成霸業。';
- }else if(!G.cities.some(c=>c.f===G.player)&&!G.units.some(u=>u.f===G.player)){
+ if(G.over)return;
+ if(G.dead[G.player]){
   G.over=true;
   G.result='勢力覆滅。重新起兵，再戰天下！';
+ }else if(G.dead.every((v,f)=>f===G.player||v)){
+  G.over=true;
+  recruitAll(ownCities(G.player)[0]);
+  G.result='天下一統！敵方勢力已全滅，武將完成登用。';
  }
  if(G.over){
   log(G.result);
@@ -431,71 +931,202 @@ function zoom(delta){
 function drawMap(){
  const a=current();
  const u=sel?.kind==='unit'&&a?.f===G.player?a:null;
- const moves=u&&!u.moved&&!u.attacked&&!G.over?reach(u):new Map();
+ const moves=u&&ready(u)&&!u.moved&&mode==='attack'&&!G.over
+  ?reach(u):new Map();
  let html='';
  for(const t of G.tiles){
-  const x=45+S*Math.sqrt(3)*(t.q+t.r*.5),y=48+S*1.5*t.r;
-  const c=cityAt(t.q,t.r),v=unitAt(t.q,t.r);
+  const x=45+S*Math.sqrt(3)*(t.q+t.r*.5);
+  const y=48+S*1.5*t.r;
+  const c=cityAt(t.q,t.r),v=unitAt(t.q,t.r),b=fortAt(t.q,t.r);
   const chosen=a&&a.q===t.q&&a.r===t.r;
-  const target=u&&canAttack(u,enemyAt(t.q,t.r,u.f))&&!G.over;
+  const target=u&&!G.over&&(
+   PLOTS[mode]?canPlot(u,v):
+   mode==='build'?canBuild(u,t):
+   canAttack(u,enemyAt(t.q,t.r,u.f))
+  );
   const fill=moves.has(key(t.q,t.r))?'#507556':({
-   '平原':'#354f40','森林':'#263f34','山地':'#53594d','河川':'#315968','橋梁':'#87785b'
+   平原:'#354f40',
+   森林:'#263f34',
+   山地:'#53594d',
+   河川:'#315968',
+   橋梁:'#87785b'
   }[t.type]);
   const points=Array.from({length:6},(_,i)=>{
    const angle=(60*i-30)*Math.PI/180;
    return (x+S*Math.cos(angle))+','+(y+S*Math.sin(angle));
   }).join(' ');
-  html+=`<g class="tile" onclick="selectHex(${t.q},${t.r})"><polygon points="${points}" fill="${fill}" stroke="${chosen?'#ffe09a':target?'#ff8d82':'#62705a'}" stroke-width="${chosen||target?3:1}"/>`;
-  if(!c&&!v){
-   html+=`<text x="${x}" y="${y+5}" text-anchor="middle" fill="#bac6a0" opacity=".55" font-size="18">${{山地:'▲',森林:'♣',河川:'≈',橋梁:'═'}[t.type]||'·'}</text>`;
+  html+=`<g class="tile" onclick="selectHex(${t.q},${t.r})">
+<polygon points="${points}" fill="${fill}"
+stroke="${chosen?'#ffe09a':target?(mode==='build'?'#dd99f7':'#ff8d82'):'#62705a'}"
+stroke-width="${chosen||target?3:1}"/>`;
+  if(!c&&!v&&!b){
+   html+=`<text x="${x}" y="${y+5}" text-anchor="middle"
+fill="#bac6a0" opacity=".55" font-size="18">${{
+山地:'▲',森林:'♣',河川:'≈',橋梁:'═'
+}[t.type]||'·'}</text>`;
   }
   if(c){
-   html+=`<rect x="${x-23}" y="${y-24}" width="46" height="35" rx="4" fill="#172522" stroke="${FA[c.f].color}" stroke-width="3"/><text x="${x}" y="${y-7}" text-anchor="middle" fill="${FA[c.f].color}" font-size="14" font-weight="bold">${c.name}</text><text x="${x}" y="${y+7}" text-anchor="middle" fill="#eee6ce" font-size="10">${c.troops}</text>`;
+   html+=`<rect x="${x-23}" y="${y-24}" width="46" height="35"
+rx="4" fill="#172522" stroke="${FA[c.f].color}" stroke-width="3"/>
+<text x="${x}" y="${y-7}" text-anchor="middle"
+fill="${FA[c.f].color}" font-size="14" font-weight="bold">${c.name}</text>
+<text x="${x}" y="${y+7}" text-anchor="middle"
+fill="#eee6ce" font-size="10">${c.troops}</text>`;
+  }
+  if(b){
+   html+=`<rect x="${x-24}" y="${y-24}" width="48" height="44"
+rx="8" fill="#29213b" stroke="${FA[b.f].color}" stroke-width="3"/>
+<text x="${x}" y="${y-4}" text-anchor="middle"
+fill="#eee" font-size="12">${b.type}</text>
+<text x="${x}" y="${y+12}" text-anchor="middle"
+fill="#e4c980" font-size="11">${b.hp}</text>`;
   }
   if(v){
-   html+=`<circle cx="${x}" cy="${y-6}" r="23" fill="${FA[v.f].color}" stroke="#172522" stroke-width="3"/><text x="${x}" y="${y-2}" text-anchor="middle" fill="#101c18" font-size="12" font-weight="bold">${officer(v).name}</text><text x="${x}" y="${y+24}" text-anchor="middle" fill="#fff7df" font-size="12">${v.type[0]} ${v.troops}${v.attacked?' ✓':''}</text>`;
+   html+=`<circle cx="${x}" cy="${y-6}" r="23"
+fill="${FA[v.f].color}" stroke="#172522" stroke-width="3"/>
+<text x="${x}" y="${y-2}" text-anchor="middle"
+fill="#101c18" font-size="12" font-weight="bold">${officer(v).name}</text>
+<text x="${x}" y="${y+24}" text-anchor="middle"
+fill="#fff7df" font-size="12">${v.type[0]} ${v.troops}${
+v.stunned?' 亂':v.confused?' !':v.attacked?' ✓':''
+}</text>`;
   }
   html+='</g>';
  }
  $('map').innerHTML=html;
 }
 
-const button=(text,action,disabled=false)=>`<button onclick="${action}" ${disabled?'disabled':''}>${text}</button>`;
+const button=(text,action,disabled=false)=>
+ `<button onclick="${action}" ${disabled?'disabled':''}>${text}</button>`;
 
 function render(){
  if(!G)return;
- const r=G.res[G.player];
- $('stats').innerHTML=`<span><b>${FA[G.player].name}軍</b> · 第 ${G.turn} 回合</span><span>金 <b>${r.gold.toLocaleString()}</b></span><span>糧 <b>${r.food.toLocaleString()}</b></span><span>城池 <b>${G.cities.filter(c=>c.f===G.player).length}/12</b></span><span>野戰部隊 <b>${G.units.filter(u=>u.f===G.player).length}</b></span>`;
- $('end').disabled=busy||G.over;
+ const r=G.res[G.player],a=current(),disabled=busy||G.over;
+ $('stats').innerHTML=`
+<b>${FA[G.player].name}軍 · 第 ${G.turn} 回合</b>
+<span>金 ${r.gold.toLocaleString()}</span>
+<span>糧 ${r.food.toLocaleString()}</span>
+<span>城 ${ownCities(G.player).length}/12</span>
+<span>設施 ${G.forts.filter(b=>b.f===G.player).length}/8</span>`;
+ $('end').disabled=disabled;
  drawMap();
- const a=current();
  let h='';
  if(!a){
-  h=`<h2>${G.over?'戰局結束':'天下三分'}</h2><p class="note">${G.over?G.result:'點選城池管理內政；點選武將旗幟指揮部隊。可拖動捲軸查看地圖，或按 ＋／－ 縮放。'}</p>`;
-  FA.forEach((f,i)=>h+=`<div class="row"><span style="color:${f.color}">${f.name}軍</span><span>${G.cities.filter(c=>c.f===i).length} 城 · ${G.units.filter(u=>u.f===i).length} 隊</span></div>`);
+  h=`<h2>${G.over?'戰局結束':'天下形勢'}</h2>
+<p class="note">${G.over?G.result:
+'選城管理、調動及登用；選部隊行軍、計略及建設。'}</p>`;
+  FA.forEach((f,i)=>h+=`
+<div class="row">
+<b style="color:${f.color}">${f.name}</b>
+<span>${G.dead[i]?'已滅亡':
+ownCities(i).length+' 城／'+G.units.filter(u=>u.f===i).length+' 隊'
+}</span></div>`);
  }else if(sel.kind==='city'){
-  const own=a.f===G.player,os=available(a),disabled=busy||G.over;
-  h=`<small>${FA[a.f].name}軍城池</small><h2>${a.name}</h2><div class="row"><span>城防</span><span>${a.hp} / 5000</span></div><div class="bar"><i style="width:${a.hp/50}%"></i></div><div class="row"><span>守軍</span><span>${a.troops.toLocaleString()}</span></div><div class="row"><span>開發</span><span>${a.level} / 5</span></div><div class="note">每回合收入：金 ${350+a.level*180}、糧 ${1200+a.level*500}<br>可出征武將：${os.map(o=>o.name).join('、')||'無'}</div>`;
-  if(own){
-   h+=`<div class="actions">
-${button('開發 · 金 700',"cityAction('develop')",disabled||a.acted||a.level>=5)}
-${button('徵兵 2500 · 金 600／糧 1500',"cityAction('recruit')",disabled||a.acted||a.troops>=20000)}
-${button('修城 1800 · 金 500',"cityAction('repair')",disabled||a.acted||a.hp>=5000)}
-</div><h3>派遣部隊</h3>
-<label>主將<select id="officer">${os.map(o=>`<option value="${o.id}">${o.name} · 武力 ${o.power}</option>`).join('')}</select></label>
-<label>兵種<select id="type">${Object.keys(TYPES).map(t=>`<option>${t}</option>`).join('')}</select></label>
-<label>出征兵力<select id="count"><option value="3000">3,000</option><option value="5000">5,000</option><option value="8000">8,000</option></select></label>
-<div class="actions">${button('出征 · 金 300','playerDeploy()',disabled||!os.length)}</div>
-<p class="note">每城每回合一次內政。出征不耗內政次數；需留 1,000 守軍。城防歸零且守軍 ≤1,000 才能佔領。</p>`;
-  }
- }else{
-  h=`<small>${FA[a.f].name}軍 · ${a.type}</small><h2>${officer(a).name}</h2><div class="row"><span>兵力</span><span>${a.troops.toLocaleString()}</span></div><div class="row"><span>武力／氣力</span><span>${officer(a).power} / ${a.energy}</span></div><div class="row"><span>移動／射程</span><span>${TYPES[a.type].move} / ${TYPES[a.type].range} 格</span></div><p class="note">${a.moved?'已移動':'尚可移動'} · ${a.attacked?'已攻擊':'尚可攻擊'}<br>森林承受傷害 -20%。近距離攻擊可能遭反擊。每回合耗糧約 ${Math.ceil(a.troops*.12)}。</p>`;
+  const os=available(a);
+  const homes=ownCities(a.f).filter(c=>c.id!==a.id);
+  h=`<small>${FA[a.f].name}軍城池</small>
+<h2>${a.name}</h2>
+<p>城防 ${a.hp}/5000 · 守軍 ${a.troops}</p>
+<p>開發 ${a.level}/5</p>
+<p class="note">每回合：金 ${350+a.level*180}／糧 ${1200+a.level*500}
+<br>在城武將：${G.officers.filter(o=>o.city===a.id)
+.map(o=>o.name+(o.ready>G.turn?'（休整）':'')).join('、')||'無'}</p>`;
   if(a.f===G.player){
    h+=`<div class="actions">
-${button(skill?'取消戰法':'戰法 · 氣力 30','toggleSkill()',busy||G.over||a.attacked||a.energy<30)}
-${button('進駐附近我方城池','enterCity()',busy||G.over||a.attacked)}
-</div><p class="note">${skill?'戰法啟用中：點敵人施放。':'綠格移動，紅框攻擊。'}<br>進駐可回收兵力與武將，攻擊後不可進駐。</p>`;
+${button('開發 · 金700',"cityAction('develop')",
+disabled||a.acted||a.level>=5)}
+${button('徵兵2500 · 金600／糧1500',"cityAction('recruit')",
+disabled||a.acted||a.troops>=20000)}
+${button('修城1800 · 金500',"cityAction('repair')",
+disabled||a.acted||a.hp>=5000)}
+</div>
+<h3>出征／武將調動</h3>
+<label>武將<select id="officer">${
+os.map(o=>`<option value="${o.id}">${o.name} 武${o.power}／智${o.intel}</option>`).join('')
+}</select></label>
+<label>兵種<select id="type">${
+Object.keys(TYPES).map(t=>`<option>${t}</option>`).join('')
+}</select></label>
+<label>兵力<select id="count">
+<option value="3000">3000</option>
+<option value="5000">5000</option>
+<option value="8000">8000</option>
+</select></label>
+<div class="actions">${
+button('出征 · 金300','playerDeploy()',disabled||!os.length)
+}</div>
+<label>調動目的地<select id="destination">${
+homes.map(c=>`<option value="${c.id}">${c.name} · ${
+Math.max(1,Math.ceil(dist(a,c)/4))
+}回合</option>`).join('')
+}</select></label>
+<div class="actions">
+${button('調動所選武將（不帶兵）','transfer()',
+disabled||!os.length||!homes.length)}
+${button('登用滅亡勢力武將（'+recruitable(G.player).length+'名）',
+'recruitPrisoners()',disabled||!recruitable(G.player).length)}
+</div>
+<p class="note">出征須留1000守軍。調動中不可出征；目的地失陷會改投其他我方城池。登用免費，須休整至下回合。</p>`;
   }
+ }else if(sel.kind==='fort'){
+  const d=BUILD[a.type];
+  h=`<small>${FA[a.f].name}軍設施</small>
+<h2>${a.type}</h2>
+<p>耐久 ${a.hp}/${d.hp} · 範圍 ${d.range}格</p>
+<p class="note">${d.desc}。同類增益不疊加；設施佔據格子，不可穿越，可被敵軍摧毀。</p>`;
+ }else{
+  const o=officer(a);
+  h=`<small>${FA[a.f].name}軍 · ${a.type}</small>
+<h2>${o.name}</h2>
+<p>兵力 ${a.troops} · 氣力 ${a.energy}</p>
+<p>武力 ${o.power} · <b>智力 ${o.intel}</b></p>
+<p>移動 ${TYPES[a.type].move}／射程 ${TYPES[a.type].range}</p>
+<p class="note">${
+a.stunned?'本階段混亂，不能行動':
+a.attacked?'本回合已行動':
+a.moved?'已移動，尚可執行指令':'可移動及執行指令'
+}${a.confused?'；下階段將混亂':''}
+<br>設施增益：${
+['軍樂台','戰鼓台','堅陣塔'].filter(t=>aura(a,t)).join('、')||'無'
+}</p>`;
+  if(a.f===G.player){
+   const lock=disabled||!ready(a);
+   h+=`<div class="actions">
+${button('普通攻擊／取消指令',"mode='attack';render()",disabled)}
+${button('戰法 · 氣30','toggleSkill()',lock||a.energy<30)}
+${Object.keys(PLOTS).map(t=>button(
+t+' · 氣'+PLOTS[t].cost,
+"chooseMode('"+t+"')",
+lock||a.energy<PLOTS[t].cost
+)).join('')}
+${button('進駐附近我方城池','enterCity()',lock)}
+</div>
+<h3>建設（消耗一次行動）</h3>
+<div class="actions">${
+Object.entries(BUILD).map(([t,d])=>button(
+t+' · 金'+d.cost,
+"chooseBuild('"+t+"')",
+lock||r.gold<d.cost||G.forts.filter(b=>b.f===a.f).length>=8
+)).join('')
+}</div>
+<p class="note">目前指令：${mode==='build'?'建造'+buildType:mode}
+<br>攻擊、戰法、計略、建造共用一次行動，失敗的計略也扣氣並結束行動。</p>`;
+   if(PLOTS[mode]){
+    h+=`<p class="note">${PLOTS[mode].desc}。
+<br>2格內目標：<br>${
+G.units.filter(v=>v.f!==a.f&&dist(v,a)<=2)
+.map(v=>officer(v).name+'（智'+officer(v).intel+'）：'+
+Math.round(probability(a,v))+'%').join('<br>')||'無'
+}</p>`;
+   }
+  }
+ }
+ const travel=G.officers.filter(o=>o.f===G.player&&o.transit);
+ if(travel.length){
+  h+='<h3>調動中</h3><p class="note">'+travel.map(
+   o=>o.name+' → '+G.cities.find(c=>c.id===o.transit.to).name+
+   '（剩'+Math.max(0,o.transit.arrival-G.turn)+'回合）'
+  ).join('<br>')+'</p>';
  }
  $('detail').innerHTML=h;
  $('log').replaceChildren(...G.log.map(s=>{
@@ -521,21 +1152,28 @@ function loadGame(){
  if(G&&!confirm('讀檔將取代目前尚未儲存的進度，是否繼續？'))return;
  try{
   const raw=localStorage.getItem(KEY);
-  if(!raw)return message('尚無存檔。');
+  if(!raw){
+   return message('尚無第二版存檔。第一版存檔保留，但本版需重新開局。');
+  }
   const d=JSON.parse(raw);
   if(
-   d.version!==1||
+   d.version!==2||
+   !Array.isArray(d.forts)||
+   !Array.isArray(d.dead)||
+   !Array.isArray(d.lastHit)||
    !Number.isInteger(d.player)||d.player<0||d.player>2||
    !Array.isArray(d.cities)||d.cities.length!==12||
-   !Array.isArray(d.units)||!Array.isArray(d.officers)||
+   !Array.isArray(d.units)||
+   !Array.isArray(d.officers)||
    !Array.isArray(d.tiles)||d.tiles.length!==W*H||
-   !Array.isArray(d.res)||!Array.isArray(d.log)
+   !Array.isArray(d.res)||
+   !Array.isArray(d.log)
   )throw Error('bad save');
   const old=G;
   try{
    G=d;
    sel=null;
-   skill=false;
+   mode='attack';
    render();
   }catch(e){
    G=old;
@@ -545,7 +1183,7 @@ function loadGame(){
   $('start').close();
   message(G.over?G.result:'讀檔成功，繼續逐鹿天下。');
  }catch(e){
-  message('無法讀取存檔，檔案格式錯誤或儲存功能不可用。');
+  message('無法讀取第二版存檔，檔案格式錯誤或儲存功能不可用。');
  }
 }
 
